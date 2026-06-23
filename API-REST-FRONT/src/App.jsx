@@ -3,12 +3,15 @@ import { Building2, LogOut } from 'lucide-react';
 import './index.css';
 import Login from './components/Login';
 import TicketList from './components/TicketList';
+import Register from './components/Register';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('access_token'));
+  const [authScreen, setAuthScreen] = useState('login'); 
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token'); 
     setIsAuthenticated(false);
   };
 
@@ -16,6 +19,7 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4 md:p-8 font-sans text-slate-800">
       <div className="max-w-6xl mx-auto">
         
+        {/* Cabecera */}
         <header className="flex justify-between items-center mb-8 bg-white/80 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-white/50">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-600 rounded-lg shadow-md shadow-blue-200">
@@ -37,11 +41,18 @@ function App() {
           )}
         </header>
         
+        {/* Cuerpo Principal */}
         <main>
           {isAuthenticated ? (
             <TicketList />
+          ) : authScreen === 'register' ? (
+            <Register onSwitchToLogin={() => setAuthScreen('login')} />
           ) : (
-            <Login onLoginSuccess={() => setIsAuthenticated(true)} />
+
+            <Login 
+              onLoginSuccess={() => setIsAuthenticated(true)} 
+              onSwitchToRegister={() => setAuthScreen('register')} 
+            />
           )}
         </main>
         
