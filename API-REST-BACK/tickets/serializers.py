@@ -32,3 +32,14 @@ class TicketSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at'
         ]
         read_only_fields = ['created_by', 'created_at', 'updated_at']
+
+        from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+        class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+            @classmethod
+            def get_token(cls, user):
+                token = super().get_token(user)
+
+                token['username'] = str(user.username)
+                token['is_staff'] = bool(user.is_staff)
+                return token

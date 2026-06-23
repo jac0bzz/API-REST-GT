@@ -38,11 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'tickets',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -142,4 +145,10 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY, # Usa la clave secreta de tu proyecto para firmar los tokens
     'AUTH_HEADER_TYPES': ('Bearer',),
+    'TOKEN_OBTAIN_PAIR_SERIALIZER': 'tickets.serializers.CustomTokenObtainPairSerializer',
 }
+
+# --- CONFIGURACIÓN DE CORS ---
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
